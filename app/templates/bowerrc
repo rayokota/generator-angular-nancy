@@ -1,0 +1,4 @@
+{
+    "directory": "<%= _.capitalize(baseName) %>/Content/lib",
+    "json": "bower.json"
+}
