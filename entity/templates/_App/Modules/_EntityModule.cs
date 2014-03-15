@@ -7,8 +7,9 @@ using Nancy.ModelBinding;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System.Data;
+using <%= _.capitalize(baseName) %>.Models;
 
-namespace <%= _.capitalize(baseName) %>
+namespace <%= _.capitalize(baseName) %>.Modules
 {
     public class <%= _.capitalize(name) %>Module : Nancy.NancyModule
     {

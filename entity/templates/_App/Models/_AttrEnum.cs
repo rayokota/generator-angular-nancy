@@ -1,6 +1,6 @@
 using System;
 
-namespace <%= _.capitalize(baseName) %>
+namespace <%= _.capitalize(baseName) %>.Models
 {
     public enum <%= _.capitalize(attr.attrName) %>Enum
     {

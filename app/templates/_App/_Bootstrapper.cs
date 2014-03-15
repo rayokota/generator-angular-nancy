@@ -12,6 +12,7 @@ using Nancy.Diagnostics;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 using Nancy.Conventions;
+using <%= _.capitalize(baseName) %>.Models;
 
 namespace <%= _.capitalize(baseName) %>
 {

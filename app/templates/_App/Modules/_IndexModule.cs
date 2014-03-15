@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using Nancy;
 
-namespace <%= _.capitalize(baseName) %>
+namespace <%= _.capitalize(baseName) %>.Modules
 {
     public class IndexModule : Nancy.NancyModule
     {

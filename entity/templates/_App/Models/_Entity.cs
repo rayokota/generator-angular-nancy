@@ -3,7 +3,7 @@ using Newtonsoft.Json.Converters;
 using System;
 using ServiceStack.DataAnnotations;
 
-namespace <%= _.capitalize(baseName) %>
+namespace <%= _.capitalize(baseName) %>.Models
 {
     public class <%= _.capitalize(name) %>
     {
