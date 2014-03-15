@@ -129,13 +129,13 @@ EntityGenerator.prototype.askFor = function askFor() {
     if (attrType === 'String') {
       attrImplType = 'string';
     } else if (attrType === 'Integer') {
-      attrImplType = 'integer';
+      attrImplType = 'int';
     } else if (attrType === 'Float') {
       attrImplType = 'float';
     } else if (attrType === 'Boolean') {
       attrImplType = 'bool';
     } else if (attrType === 'Date') {
-      attrImplType = 'DateTIme';
+      attrImplType = 'DateTime';
     } else if (attrType === 'Enum') {
       attrImplType = 'Enum';
     }
@@ -175,7 +175,7 @@ EntityGenerator.prototype.files = function files() {
   var modelsDir = appDir + 'Models/'
   var publicDir = appDir + 'Content/'
   this.template('_generator.json', 'generator.json');
-  this.template('../../app/templates/_App/_App.csproj', appDir + _s.capitalize(this.baseName) + '.csproj');
+  //this.template('../../app/templates/_App/_App.csproj', appDir + _s.capitalize(this.baseName) + '.csproj');
   this.template('../../app/templates/_App/_AppModule.cs', appDir + _s.capitalize(this.baseName) + 'Module.cs');
   this.template('../../app/templates/_App/_Bootstrapper.cs', appDir + 'Bootstrapper.cs');
   this.template('_App/Models/_Entity.cs', modelsDir + _s.capitalize(this.name) + '.cs');

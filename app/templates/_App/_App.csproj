@@ -40,6 +40,9 @@
     <Reference Include="Nancy.Hosting.Self">
       <HintPath>..\packages\Nancy.Hosting.Self.0.22.2\lib\net40\Nancy.Hosting.Self.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy.Serialization.JsonNet">
+      <HintPath>..\packages\Nancy.Serialization.JsonNet.0.22.2\lib\net40\Nancy.Serialization.JsonNet.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -66,13 +69,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="HomeModule.cs" />
-    <Compile Include="<%= _.capitalize(baseName) %>Module.cs" />
-    <% _.each(entities, function (entity) { %>
-    <Compile Include="Models\<%= _.capitalize(entity.name) %>.cs" /><% }); %>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="HomeModule.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="Models\*.*" />
+    <Compile Include="<%= _.capitalize(baseName) %>Module.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

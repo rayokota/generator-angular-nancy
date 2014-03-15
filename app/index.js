@@ -81,6 +81,7 @@ AngularNancyGenerator.prototype.app = function app() {
   this.template('_App/_Bootstrapper.cs', appDir + 'Bootstrapper.cs');
   this.template('_App/_HomeModule.cs', appDir + 'HomeModule.cs');
   this.template('_App/_Main.cs', appDir + 'Main.cs');
+  this.template('_App/Models/_CustomDateTimeConverter.cs', modelsDir + 'CustomDateTimeConverter.cs');
 
   var publicCssDir = publicDir + 'css/';
   var publicJsDir = publicDir + 'js/';
