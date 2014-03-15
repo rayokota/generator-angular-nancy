@@ -62,18 +62,24 @@ AngularNancyGenerator.prototype.app = function app() {
   this.copy('gitignore', '.gitignore');
 
   var appDir = _s.capitalize(this.baseName) + '/'
+  var binDir = appDir + 'bin/'
+  var debugDir = binDir + 'Debug/'
   var modelsDir = appDir + 'Models/'
   var publicDir = appDir + 'Content/'
   this.mkdir(appDir);
+  this.mkdir(binDir);
+  this.mkdir(debugDir);
   this.mkdir(modelsDir);
   this.mkdir(publicDir);
 
   this.template('_App.sln', _s.capitalize(this.baseName) + '.sln');
+  this.copy('_App/NLog.config', debugDir + 'NLog.config');
   this.copy('_App/packages.config', appDir + 'packages.config');
   this.template('_App/_App.csproj', appDir + _s.capitalize(this.baseName) + '.csproj');
   this.template('_App/_AppModule.cs', appDir + _s.capitalize(this.baseName) + 'Module.cs');
   this.template('_App/_AssemblyInfo.cs', appDir + 'AssemblyInfo.cs');
   this.template('_App/_Bootstrapper.cs', appDir + 'Bootstrapper.cs');
+  this.template('_App/_HomeModule.cs', appDir + 'HomeModule.cs');
   this.template('_App/_Main.cs', appDir + 'Main.cs');
 
   var publicCssDir = publicDir + 'css/';

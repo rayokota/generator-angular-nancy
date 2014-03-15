@@ -1,4 +1,8 @@
-﻿using ServiceStack.Data;
+﻿using NLog;
+using NLog.Config;
+using NLog.Targets;
+using NLog.Targets.Wrappers;
+using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Sqlite;
 using System;
@@ -13,11 +17,41 @@ namespace <%= _.capitalize(baseName) %>
 {
     public class Bootstrapper : DefaultNancyBootstrapper
     {
+        private Logger log = LogManager.GetLogger("RequestLogger");
+
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);
             
             StaticConfiguration.DisableErrorTraces = false;
+
+            LogAllRequests(pipelines);
+            LogAllResponseCodes(pipelines);
+            LogUnhandledExceptions(pipelines);
+        }
+
+        private void LogAllRequests(IPipelines pipelines)
+        {
+          pipelines.BeforeRequest += ctx =>
+          {
+            log.Info("Handling request {0} \"{1}\"", ctx.Request.Method, ctx.Request.Path);
+            return null;
+          };
+        }
+
+        private void LogAllResponseCodes(IPipelines pipelines)
+        {
+          pipelines.AfterRequest += ctx =>
+            log.Info("Responding {0} to {1} \"{2}\"", ctx.Response.StatusCode, ctx.Request.Method, ctx.Request.Path);
+        }
+
+        private void LogUnhandledExceptions(IPipelines pipelines)
+        {
+          pipelines.OnError.AddItemToStartOfPipeline((ctx, err) =>
+          {
+            log.ErrorException(string.Format("Request {0} \"{1}\" failed", ctx.Request.Method, ctx.Request.Path), err);
+            return null;
+          });
         }
 
        protected override void ConfigureApplicationContainer(TinyIoCContainer container)

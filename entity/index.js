@@ -178,11 +178,11 @@ EntityGenerator.prototype.files = function files() {
   this.template('../../app/templates/_App/_App.csproj', appDir + _s.capitalize(this.baseName) + '.csproj');
   this.template('../../app/templates/_App/_AppModule.cs', appDir + _s.capitalize(this.baseName) + 'Module.cs');
   this.template('../../app/templates/_App/_Bootstrapper.cs', appDir + 'Bootstrapper.cs');
-  this.template('Models/_Entity.cs', modelsDir + _s.capitalize(this.name) + '.cs');
+  this.template('_App/Models/_Entity.cs', modelsDir + _s.capitalize(this.name) + '.cs');
   _.each(this.attrs, function (attr) {
     if (attr.attrType === 'Enum') {
       this.attr = attr;
-      this.template('Models/_AttrEnum.cs', modelsDir + _s.capitalize(attr.attrName) + 'Enum.cs');
+      this.template('_App/Models/_AttrEnum.cs', modelsDir + _s.capitalize(attr.attrName) + 'Enum.cs');
     }
   }.bind(this));
 

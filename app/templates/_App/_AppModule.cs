@@ -21,14 +21,10 @@ namespace <%= _.capitalize(baseName) %>
         }
 
         public <%= _.capitalize(baseName) %>Module()
+            : base("/<%= baseName %>")
         {
-            Get["/"] = parameters =>
-            {
-                return Response.AsRedirect("Content/index.html");
-            };
-
             <% _.each(entities, function (entity) { %>
-            Get["/<%= baseName %>/<%= pluralize(entity.name) %>"] = parameters =>
+            Get["/<%= pluralize(entity.name) %>"] = parameters =>
             {
                 List<<%= _.capitalize(entity.name) %>> rows = null;
                 using (IDbConnection db = _dbFactory.OpenDbConnection()) 
@@ -38,7 +34,7 @@ namespace <%= _.capitalize(baseName) %>
                 }
             };
 
-            Get["/<%= baseName %>/<%= pluralize(entity.name) %>/{id}"] = parameters =>
+            Get["/<%= pluralize(entity.name) %>/{id}"] = parameters =>
             {
                 <%= _.capitalize(entity.name) %> row = null;
                 long rowId = parameters.id;
@@ -53,7 +49,7 @@ namespace <%= _.capitalize(baseName) %>
                 return Response.AsJson(row);
             };
 
-            Post["/<%= baseName %>/<%= pluralize(entity.name) %>"] = parameters =>
+            Post["/<%= pluralize(entity.name) %>"] = parameters =>
             {
                 <%= _.capitalize(entity.name) %> row = this.Bind<<%= _.capitalize(entity.name) %>>();
                 using (IDbConnection db = _dbFactory.OpenDbConnection())
@@ -64,7 +60,7 @@ namespace <%= _.capitalize(baseName) %>
                 return Response.AsJson(row, HttpStatusCode.Created);
             };
 
-            Put["/<%= baseName %>/<%= pluralize(entity.name) %>/{id}"] = parameters =>
+            Put["/<%= pluralize(entity.name) %>/{id}"] = parameters =>
             {
                 <%= _.capitalize(entity.name) %> row = this.Bind<<%= _.capitalize(entity.name) %>>();
                 row.Id = parameters.id;
@@ -80,7 +76,7 @@ namespace <%= _.capitalize(baseName) %>
                 return Response.AsJson(row);
             };
 
-            Delete["/<%= baseName %>/<%= pluralize(entity.name) %>/{id}"] = parameters =>
+            Delete["/<%= pluralize(entity.name) %>/{id}"] = parameters =>
             {
                 long rowId = parameters.id;
                 using (IDbConnection db = _dbFactory.OpenDbConnection())
