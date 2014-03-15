@@ -6,9 +6,9 @@ using Nancy;
 
 namespace <%= _.capitalize(baseName) %>
 {
-    public class HomeModule : Nancy.NancyModule
+    public class IndexModule : Nancy.NancyModule
     {
-        public HomeModule()
+        public IndexModule()
         {
             Get["/"] = parameters =>
             {

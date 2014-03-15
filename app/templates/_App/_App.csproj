@@ -71,10 +71,9 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="HomeModule.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Models\*.*" />
-    <Compile Include="<%= _.capitalize(baseName) %>Module.cs" />
+    <Compile Include="Modules\*.*" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

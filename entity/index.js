@@ -173,12 +173,12 @@ EntityGenerator.prototype.files = function files() {
 
   var appDir = _s.capitalize(this.baseName) + '/'
   var modelsDir = appDir + 'Models/'
+  var modulesDir = appDir + 'Modules/'
   var publicDir = appDir + 'Content/'
   this.template('_generator.json', 'generator.json');
-  //this.template('../../app/templates/_App/_App.csproj', appDir + _s.capitalize(this.baseName) + '.csproj');
-  this.template('../../app/templates/_App/_AppModule.cs', appDir + _s.capitalize(this.baseName) + 'Module.cs');
   this.template('../../app/templates/_App/_Bootstrapper.cs', appDir + 'Bootstrapper.cs');
   this.template('_App/Models/_Entity.cs', modelsDir + _s.capitalize(this.name) + '.cs');
+  this.template('_App/Modules/_EntityModule.cs', modulesDir + _s.capitalize(this.name) + 'Module.cs');
   _.each(this.attrs, function (attr) {
     if (attr.attrType === 'Enum') {
       this.attr = attr;

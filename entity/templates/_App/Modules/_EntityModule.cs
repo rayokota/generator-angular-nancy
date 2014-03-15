@@ -10,37 +10,36 @@ using System.Data;
 
 namespace <%= _.capitalize(baseName) %>
 {
-    public class <%= _.capitalize(baseName) %>Module : Nancy.NancyModule
+    public class <%= _.capitalize(name) %>Module : Nancy.NancyModule
     {
         private readonly IDbConnectionFactory _dbFactory;
 
-        public <%= _.capitalize(baseName) %>Module(IDbConnectionFactory dbFactory)
+        public <%= _.capitalize(name) %>Module(IDbConnectionFactory dbFactory)
             : this()
         {
             _dbFactory = dbFactory;
         }
 
-        public <%= _.capitalize(baseName) %>Module()
-            : base("/<%= baseName %>")
+        public <%= _.capitalize(name) %>Module()
+            : base("/<%= baseName %>/<%= pluralize(name) %>")
         {
-            <% _.each(entities, function (entity) { %>
-            Get["/<%= pluralize(entity.name) %>"] = parameters =>
+            Get["/"] = parameters =>
             {
-                List<<%= _.capitalize(entity.name) %>> rows = null;
+                List<<%= _.capitalize(name) %>> rows = null;
                 using (IDbConnection db = _dbFactory.OpenDbConnection()) 
                 {
-                    rows = db.Select<<%= _.capitalize(entity.name) %>>();
+                    rows = db.Select<<%= _.capitalize(name) %>>();
                     return Response.AsJson(rows);
                 }
             };
 
-            Get["/<%= pluralize(entity.name) %>/{id}"] = parameters =>
+            Get["/{id}"] = parameters =>
             {
-                <%= _.capitalize(entity.name) %> row = null;
+                <%= _.capitalize(name) %> row = null;
                 long rowId = parameters.id;
                 using (IDbConnection db = _dbFactory.OpenDbConnection()) 
                 {
-                    row = db.Single<<%= _.capitalize(entity.name) %>>(r => r.Id == rowId);
+                    row = db.Single<<%= _.capitalize(name) %>>(r => r.Id == rowId);
                     if (row == null) 
                     {
                         return HttpStatusCode.NotFound;
@@ -49,9 +48,9 @@ namespace <%= _.capitalize(baseName) %>
                 return Response.AsJson(row);
             };
 
-            Post["/<%= pluralize(entity.name) %>"] = parameters =>
+            Post["/"] = parameters =>
             {
-                <%= _.capitalize(entity.name) %> row = this.Bind<<%= _.capitalize(entity.name) %>>();
+                <%= _.capitalize(name) %> row = this.Bind<<%= _.capitalize(name) %>>();
                 using (IDbConnection db = _dbFactory.OpenDbConnection())
                 {
                     db.Insert(row);
@@ -60,13 +59,13 @@ namespace <%= _.capitalize(baseName) %>
                 return Response.AsJson(row, HttpStatusCode.Created);
             };
 
-            Put["/<%= pluralize(entity.name) %>/{id}"] = parameters =>
+            Put["/{id}"] = parameters =>
             {
-                <%= _.capitalize(entity.name) %> row = this.Bind<<%= _.capitalize(entity.name) %>>();
+                <%= _.capitalize(name) %> row = this.Bind<<%= _.capitalize(name) %>>();
                 row.Id = parameters.id;
                 using (IDbConnection db = _dbFactory.OpenDbConnection())
                 {
-                    <%= _.capitalize(entity.name) %> oldRow = db.Single<<%= _.capitalize(entity.name) %>>(r => r.Id == row.Id);
+                    <%= _.capitalize(name) %> oldRow = db.Single<<%= _.capitalize(name) %>>(r => r.Id == row.Id);
                     if (oldRow == null) 
                     {
                         return HttpStatusCode.NotFound;
@@ -76,17 +75,15 @@ namespace <%= _.capitalize(baseName) %>
                 return Response.AsJson(row);
             };
 
-            Delete["/<%= pluralize(entity.name) %>/{id}"] = parameters =>
+            Delete["/{id}"] = parameters =>
             {
                 long rowId = parameters.id;
                 using (IDbConnection db = _dbFactory.OpenDbConnection())
                 {
-                    db.Delete<<%= _.capitalize(entity.name) %>>(r => r.Id == rowId);
+                    db.Delete<<%= _.capitalize(name) %>>(r => r.Id == rowId);
                 }
                 return HttpStatusCode.NoContent;
             };
-
-            <% }); %>
         }
     }
 }
