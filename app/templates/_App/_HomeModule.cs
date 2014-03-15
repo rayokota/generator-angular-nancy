@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using Nancy;
 
-namespace Myapp
+namespace <%= _.capitalize(baseName) %>
 {
     public class HomeModule : Nancy.NancyModule
     {

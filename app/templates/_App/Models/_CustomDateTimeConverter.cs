@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 
-namespace Myapp
+namespace <%= _.capitalize(baseName) %>
 {
     public class CustomDateTimeConverter : IsoDateTimeConverter
     {
