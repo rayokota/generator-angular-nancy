@@ -73,16 +73,12 @@ AngularNancyGenerator.prototype.app = function app() {
   var appDir = _s.capitalize(this.baseName) + '/'
   var x64Dir = appDir + 'x64/'
   var x86Dir = appDir + 'x86/'
-  var binDir = appDir + 'bin/'
-  var debugDir = binDir + 'Debug/'
   var modelsDir = appDir + 'Models/'
   var modulesDir = appDir + 'Modules/'
   var publicDir = appDir + 'Content/'
   this.mkdir(x64Dir);
   this.mkdir(x86Dir);
   this.mkdir(appDir);
-  this.mkdir(binDir);
-  this.mkdir(debugDir);
   this.mkdir(modelsDir);
   this.mkdir(modulesDir);
   this.mkdir(publicDir);
@@ -90,9 +86,8 @@ AngularNancyGenerator.prototype.app = function app() {
   this.template('_App.sln', _s.capitalize(this.baseName) + '.sln');
   this.copy('_App/x64/SQLite.Interop.dll', x64Dir + 'SQLite.Interop.dll');
   this.copy('_App/x86/SQLite.Interop.dll', x86Dir + 'SQLite.Interop.dll');
-  this.copy('_App/NLog.config', debugDir + 'NLog.config');
   this.copy('_App/App.config', appDir + 'App.config');
-  this.copy('_App/NLog.config', debugDir + 'NLog.config');
+  this.copy('_App/NLog.config', appDir + 'NLog.config');
   this.copy('_App/_packages.config', appDir + 'packages.config');
   this.template('_App/_App.csproj', appDir + _s.capitalize(this.baseName) + '.csproj');
   this.template('_App/_AssemblyInfo.cs', appDir + 'AssemblyInfo.cs');
