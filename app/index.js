@@ -34,10 +34,18 @@ AngularNancyGenerator.prototype.askFor = function askFor() {
     name: 'baseName',
     message: 'What is the name of your application?',
     default: 'myapp'
+  },
+  {
+    type: 'list',
+    name: 'platform',
+    message: 'Which platform would you like to target?',
+    choices: ['mono', 'windows'],
+    default: 'windows'
   }];
 
   this.prompt(prompts, function (props) {
     this.baseName = props.baseName;
+    this.platform = props.platform;
 
     cb();
   }.bind(this));
@@ -49,6 +57,7 @@ AngularNancyGenerator.prototype.app = function app() {
   this.resources = [];
   this.generatorConfig = {
     "baseName": this.baseName,
+    "platform": this.platform,
     "entities": this.entities,
     "resources": this.resources
   };
@@ -75,8 +84,9 @@ AngularNancyGenerator.prototype.app = function app() {
   this.mkdir(publicDir);
 
   this.template('_App.sln', _s.capitalize(this.baseName) + '.sln');
+  this.copy('_App/App.config', appDir + 'App.config');
   this.copy('_App/NLog.config', debugDir + 'NLog.config');
-  this.copy('_App/packages.config', appDir + 'packages.config');
+  this.copy('_App/_packages.config', appDir + 'packages.config');
   this.template('_App/_App.csproj', appDir + _s.capitalize(this.baseName) + '.csproj');
   this.template('_App/_AssemblyInfo.cs', appDir + 'AssemblyInfo.cs');
   this.template('_App/_Bootstrapper.cs', appDir + 'Bootstrapper.cs');
