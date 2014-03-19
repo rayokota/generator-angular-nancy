@@ -61,12 +61,16 @@
     <Reference Include="ServiceStack.OrmLite">
       <HintPath>..\packages\ServiceStack.OrmLite.4.0.12\lib\net40\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
+    <% if (platform == 'Mono') { %>
     <Reference Include="Mono.Data.Sqlite">
       <HintPath>..\packages\ServiceStack.OrmLite.Sqlite.Mono.4.0.12\lib\net40\Mono.Data.Sqlite.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.OrmLite.Sqlite">
       <HintPath>..\packages\ServiceStack.OrmLite.Sqlite.Mono.4.0.12\lib\net40\ServiceStack.OrmLite.Sqlite.dll</HintPath>
-    </Reference>
+    </Reference><% } else { %>
+    <Reference Include="ServiceStack.OrmLite.Sqlite">
+      <HintPath>..\packages\ServiceStack.OrmLite.Sqlite.Windows.4.0.12\lib\net40\ServiceStack.OrmLite.Sqlite.Windows.dll</HintPath>
+    </Reference><% }; %>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />

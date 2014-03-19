@@ -26,7 +26,7 @@ In a new directory, generate the service:
 
 Install dependencies:
 
-    NuGet.exe restore
+    nuget.exe restore
     
 Build and run the service for Windows:
 

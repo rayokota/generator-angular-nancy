@@ -39,8 +39,8 @@ AngularNancyGenerator.prototype.askFor = function askFor() {
     type: 'list',
     name: 'platform',
     message: 'Which platform would you like to target?',
-    choices: ['mono', 'windows'],
-    default: 'windows'
+    choices: ['Mono', 'Windows'],
+    default: 'Windows'
   }];
 
   this.prompt(prompts, function (props) {
