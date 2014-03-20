@@ -14,12 +14,12 @@ namespace <%= _.capitalize(baseName) %>
             };
 
             var nancyHost = new NancyHost(hostConfiguration,
-                new Uri("http://127.0.0.1:8080/"));
+                new Uri("http://localhost:8080/"));
 
             nancyHost.Start();
             
-            Console.WriteLine("Nancy now listening - navigating to http://127.0.0.1:8080/. Press enter to stop");
-            Process.Start("http://127.0.01:8080/");
+            Console.WriteLine("Nancy now listening at http://localhost:8080/. Press enter to stop");
+            //Process.Start("http://localhost:8080/");
             Console.ReadKey();
             
             nancyHost.Stop();
