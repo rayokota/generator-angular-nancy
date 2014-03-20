@@ -24,9 +24,13 @@ In a new directory, generate the service:
 
     yo angular-nancy
 
-Install dependencies:
+Install dependencies for Windows:
 
     nuget.exe restore
+    
+or for Mono:
+    
+    mono --runtime=v4.0 nuget.exe restore
     
 Build and run the service for Windows:
 
