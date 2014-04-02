@@ -130,8 +130,12 @@ EntityGenerator.prototype.askFor = function askFor() {
       attrImplType = 'string';
     } else if (attrType === 'Integer') {
       attrImplType = 'int';
+    } else if (attrType === 'Long') {
+      attrImplType = 'long';
     } else if (attrType === 'Float') {
       attrImplType = 'float';
+    } else if (attrType === 'Double') {
+      attrImplType = 'double';
     } else if (attrType === 'Boolean') {
       attrImplType = 'bool';
     } else if (attrType === 'Date') {
