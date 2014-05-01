@@ -41,11 +41,19 @@ AngularNancyGenerator.prototype.askFor = function askFor() {
     message: 'Which platform would you like to target?',
     choices: ['Mono', 'Windows'],
     default: 'Windows'
+  },
+  {
+    type: 'list',
+    name: 'orm',
+    message: 'Which object-relational mapper would you like to use?',
+    choices: ['NHibernate', 'OrmLite'],
+    default: 'NHibernate'
   }];
 
   this.prompt(prompts, function (props) {
     this.baseName = props.baseName;
     this.platform = props.platform;
+    this.orm = props.orm;
 
     cb();
   }.bind(this));
@@ -58,6 +66,7 @@ AngularNancyGenerator.prototype.app = function app() {
   this.generatorConfig = {
     "baseName": this.baseName,
     "platform": this.platform,
+    "orm": this.orm,
     "entities": this.entities,
     "resources": this.resources
   };
@@ -74,12 +83,14 @@ AngularNancyGenerator.prototype.app = function app() {
   var x64Dir = appDir + 'x64/'
   var x86Dir = appDir + 'x86/'
   var modelsDir = appDir + 'Models/'
+  var mappingsDir = modelsDir + 'Mappings/'
   var modulesDir = appDir + 'Modules/'
   var publicDir = appDir + 'Content/'
   this.mkdir(x64Dir);
   this.mkdir(x86Dir);
   this.mkdir(appDir);
   this.mkdir(modelsDir);
+  this.mkdir(mappingsDir);
   this.mkdir(modulesDir);
   this.mkdir(publicDir);
 
@@ -95,6 +106,10 @@ AngularNancyGenerator.prototype.app = function app() {
   this.template('_App/Modules/_IndexModule.cs', modulesDir + 'IndexModule.cs');
   this.template('_App/_Main.cs', appDir + 'Main.cs');
   this.template('_App/Models/_CustomDateTimeConverter.cs', modelsDir + 'CustomDateTimeConverter.cs');
+  if (this.orm == 'NHibernate') {
+    this.template('_App/Models/Mappings/_IMappable.cs', mappingsDir + 'IMappable.cs');
+    this.template('_App/Models/Mappings/_MappingConfig.cs', mappingsDir + 'MappingConfig.cs');
+  }
 
   var publicCssDir = publicDir + 'css/';
   var publicJsDir = publicDir + 'js/';

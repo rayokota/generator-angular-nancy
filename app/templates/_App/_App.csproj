@@ -34,6 +34,16 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="Microsoft.CSharp" />
+    <% if (orm == 'NHibernate') { %>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\packages\FluentNHibernate.1.4.0.0\lib\net35\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+    </Reference><% }; %>
     <Reference Include="Nancy">
       <HintPath>..\packages\Nancy.0.22.2\lib\net40\Nancy.dll</HintPath>
     </Reference>
@@ -58,19 +68,21 @@
     <Reference Include="ServiceStack.Common">
       <HintPath>..\packages\ServiceStack.Common.4.0.12\lib\net40\ServiceStack.Common.dll</HintPath>
     </Reference>
+    <% if (orm == 'OrmLite') { %>
     <Reference Include="ServiceStack.OrmLite">
       <HintPath>..\packages\ServiceStack.OrmLite.4.0.12\lib\net40\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
     <% if (platform == 'Mono') { %>
     <Reference Include="ServiceStack.OrmLite.Sqlite">
       <HintPath>..\packages\ServiceStack.OrmLite.Sqlite.Mono.4.0.12\lib\net40\ServiceStack.OrmLite.Sqlite.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Data.Sqlite">
-      <HintPath>..\packages\ServiceStack.OrmLite.Sqlite.Mono.4.0.12\lib\net40\Mono.Data.Sqlite.dll</HintPath>
     </Reference><% } else { %>
     <Reference Include="ServiceStack.OrmLite.Sqlite">
       <HintPath>..\packages\ServiceStack.OrmLite.Sqlite.Windows.4.0.12\lib\net40\ServiceStack.OrmLite.Sqlite.Windows.dll</HintPath>
-    </Reference>
+    </Reference><% }}; %>
+    <% if (platform == 'Mono') { %>
+    <Reference Include="Mono.Data.Sqlite">
+      <HintPath>..\packages\ServiceStack.OrmLite.Sqlite.Mono.4.0.12\lib\net40\Mono.Data.Sqlite.dll</HintPath>
+    </Reference><% } else { %>
     <Reference Include="System.Data.SQLite">
       <HintPath>..\packages\System.Data.SQLite.1.0.91.0\lib\net40\System.Data.SQLite.dll</HintPath>
     </Reference><% }; %>
@@ -80,6 +92,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Models\*.*" />
+    <Compile Include="Models\Mappings\*.*" />
     <Compile Include="Modules\*.*" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

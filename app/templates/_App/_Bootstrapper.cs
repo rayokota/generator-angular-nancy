@@ -2,9 +2,15 @@
 using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
+<% if (orm == 'NHibernate') { %>using FluentNHibernate.Automapping;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
+using NHibernate;
+using NHibernate.Cfg;
+using NHibernate.Tool.hbm2ddl;<% }; %>
 using ServiceStack.Data;
-using ServiceStack.OrmLite;
-using ServiceStack.OrmLite.Sqlite;
+<% if (orm == 'OrmLite') { %>using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.Sqlite;<% }; %>
 using System;
 using System.Configuration;
 using Nancy;
@@ -13,6 +19,8 @@ using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 using Nancy.Conventions;
 using <%= _.capitalize(baseName) %>.Models;
+<% if (orm == 'NHibernate') { %>using <%= _.capitalize(baseName) %>.Models.Mappings;
+<% }; %>
 
 namespace <%= _.capitalize(baseName) %>
 {
@@ -55,11 +63,55 @@ namespace <%= _.capitalize(baseName) %>
           });
         }
 
-       protected override void ConfigureApplicationContainer(TinyIoCContainer container)
+        <% if (orm == 'NHibernate') { %> 
+        protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
             base.ConfigureApplicationContainer(container);
 
-            var dbFactory = new OrmLiteConnectionFactory("/tmp/my.db", SqliteDialect.Provider);
+            <% if (entities.length > 0) { %>
+            container.Register<ISessionFactory>(CreateSessionFactory());<% }; %>
+        }
+
+        protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
+        {
+            base.ConfigureRequestContainer(container, context);
+
+            <% if (entities.length > 0) { %>
+            container.Register<ISession>(container.Resolve<ISessionFactory>().OpenSession());<% }; %>
+        }
+
+        <% if (entities.length > 0) { %>
+        private static ISessionFactory CreateSessionFactory()
+        {
+            return Fluently
+               .Configure()
+               .Database(SQLiteConfiguration
+                   .Standard
+                   <% if (platform == 'Mono') { %>.Driver<MonoSqliteDriver>()<% }; %>
+                   .UsingFile("my.db"))
+               .Mappings(m => {
+                   <% _.each(entities, function(entity) { %>
+                   m.AutoMappings.Add(AutoMap.AssemblyOf<<%= _.capitalize(entity.name) %>>(new MappingConfig()).UseOverridesFromAssemblyOf<<%= _.capitalize(entity.name) %>Mapping>());<% }); %>
+                   }
+               )
+               .ExposeConfiguration(BuildSchema)
+               .BuildSessionFactory();
+        }
+
+        private static void BuildSchema(Configuration config)
+        {
+            // this NHibernate tool takes a configuration (with mapping info in)
+            // and exports a database schema from it
+            new SchemaUpdate(config)
+                .Execute(false, true);
+        }
+        <% }; %>
+        <% } else { %>
+        protected override void ConfigureApplicationContainer(TinyIoCContainer container)
+        {
+            base.ConfigureApplicationContainer(container);
+
+            var dbFactory = new OrmLiteConnectionFactory("my.db", SqliteDialect.Provider);
 
             CreateDatabase(dbFactory);
             container.Register<IDbConnectionFactory>(dbFactory);
@@ -75,5 +127,44 @@ namespace <%= _.capitalize(baseName) %>
             }
             <% }; %>
         }
+        <% }; %>
     }
+
+    <% if (orm == 'NHibernate' && platform == 'Mono') { %>
+    public class MonoSqliteDriver : NHibernate.Driver.ReflectionBasedDriver
+    {
+        public MonoSqliteDriver()
+            : base(
+            "Mono.Data.Sqlite",
+            "Mono.Data.Sqlite",
+            "Mono.Data.Sqlite.SqliteConnection",
+            "Mono.Data.Sqlite.SqliteCommand")
+        {
+        }
+
+        public override bool UseNamedPrefixInParameter {
+            get {
+                return true;
+            }
+        }
+
+        public override bool UseNamedPrefixInSql {
+            get {
+                return true;
+            }
+        }
+
+        public override string NamedPrefix {
+            get {
+                return "@";
+            }
+        }
+
+        public override bool SupportsMultipleOpenReaders {
+            get {
+                return false;
+            }
+        }
+    }
+    <% }; %>
 }

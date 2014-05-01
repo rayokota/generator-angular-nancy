@@ -169,6 +169,7 @@ EntityGenerator.prototype.files = function files() {
 
   this.baseName = this.generatorConfig.baseName;
   this.platform = this.generatorConfig.platform;
+  this.orm = this.generatorConfig.orm;
   this.entities = this.generatorConfig.entities;
   this.entities = _.reject(this.entities, function (entity) { return entity.name === this.name; }.bind(this));
   this.entities.push({ name: this.name, attrs: this.attrs});
@@ -178,6 +179,7 @@ EntityGenerator.prototype.files = function files() {
 
   var appDir = _s.capitalize(this.baseName) + '/'
   var modelsDir = appDir + 'Models/'
+  var mappingsDir = modelsDir + 'Mappings/'
   var modulesDir = appDir + 'Modules/'
   var publicDir = appDir + 'Content/'
   this.template('_generator.json', 'generator.json');
@@ -190,6 +192,9 @@ EntityGenerator.prototype.files = function files() {
       this.template('_App/Models/_AttrEnum.cs', modelsDir + _s.capitalize(attr.attrName) + 'Enum.cs');
     }
   }.bind(this));
+  if (this.orm == 'NHibernate') {
+    this.template('_App/Models/Mappings/_EntityMapping.cs', mappingsDir + _s.capitalize(this.name) + 'Mapping.cs');
+  }
 
   var publicCssDir = publicDir + 'css/';
   var publicJsDir = publicDir + 'js/';
